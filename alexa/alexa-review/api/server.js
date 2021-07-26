@@ -20,10 +20,10 @@ db.sequelize.sync();
 
 //route to router module
 
-// app.get('*', (req, res) => {
-//   res.status(200).send('Welcome Home');
-// });
-const port = 3002;
+app.get('/', (req, res) => {
+  res.status(200).send('Welcome Home');
+});
+const port = 3000;
 app.listen(port, () => {
   console.log(`app listening at http://localhost:${port}`)
 });
