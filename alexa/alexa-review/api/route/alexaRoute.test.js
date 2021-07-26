@@ -2,7 +2,7 @@ jest.mock('../controller/alexa.controller');
 const alexaController = require('../controller/alexa.controller');
 const request = require('supertest');
 
-describe('checking access review', () => {
+describe.skip('checking access review', () => {
     let app, appUrl;
     beforeAll(() => {
         app = require('../server');

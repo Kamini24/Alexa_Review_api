@@ -81,7 +81,7 @@ module.exports = {
     getMonthlyRatingBystore(req, res) {
         let store_name = req.params.review_source;
         let data;
-        console.log(`store_name:${store_name}`);
+        // console.log(`store_name:${store_name}`);
         alexaModel.findAll({
             attributes: ['rating'],
             where:
