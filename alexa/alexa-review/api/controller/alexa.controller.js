@@ -92,7 +92,7 @@ module.exports = {
 
         })
             .catch(err => {
-                res.sendStatus(500).send({
+                res.status(500).send({
                     message: "Error retrieving feedback for Alexa"
                 });
             });

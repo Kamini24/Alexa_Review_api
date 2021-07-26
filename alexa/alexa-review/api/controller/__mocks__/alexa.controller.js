@@ -2,7 +2,7 @@
 const alexaController = jest.genMockFromModule('../alexa.controller');
 let Keys = Object.keys(alexaController);
 Keys.forEach(k => {
-    alexaController[k] = jest.fn().mockImplemenation((req, res) => {
+    alexaController[k] = jest.fn().mockImplementation((req, res) => {
         return res.status(200).send({ testName: 'alexa.controller' })
     })
 });

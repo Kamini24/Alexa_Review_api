@@ -1,5 +1,5 @@
 const express = require('express');
-// const bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 const app = express();
 
 const fs = require("fs");
@@ -23,7 +23,7 @@ db.sequelize.sync();
 app.get('/', (req, res) => {
   res.status(200).send('Welcome Home');
 });
-const port = 3000;
+const port = 3002;
 app.listen(port, () => {
   console.log(`app listening at http://localhost:${port}`)
 });
