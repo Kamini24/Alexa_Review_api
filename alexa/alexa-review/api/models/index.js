@@ -1,36 +1,24 @@
-module.exports = (sequelize, Sequelize) => {
-  const alexa = sequelize.define("alexas", {
-    review: {
-      type: Sequelize.STRING
-    },
-    author: {
-      type: Sequelize.STRING
-    },
-    review_source: {
-      type: Sequelize.STRING
-    },
-    rating: {
-      type: Sequelize.INTEGER
-    },
-    title: {
-      type: Sequelize.STRING
-    },
-    product_name: {
-      type: Sequelize.STRING
-    },
-    reviewed_date: {
-      type: Sequelize.STRING
-    }
-  },
-    {
-      tableName: 'alexas',
-      // schema: 'public',
-      createdAt: false,
-      updatedAt: false,
-      underscored: true
+const dbConfig = require("../config/db.config.js");
 
-    }
-  );
-  alexa.removeAttribute('id');
-  return alexa;
-};
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  operatorsAliases: false,
+
+  pool: {
+    max: dbConfig.pool.max,
+    min: dbConfig.pool.min,
+    acquire: dbConfig.pool.acquire,
+    idle: dbConfig.pool.idle
+  }
+
+});
+const db = {};
+
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+db.alexa = require("./alexa.js")(sequelize, Sequelize);
+
+module.exports = db;
