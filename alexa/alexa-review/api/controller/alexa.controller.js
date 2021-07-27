@@ -48,71 +48,74 @@ module.exports = {
         }
 
         alexaModel.create(reviewObj).then(data => {
-            return res.status(201).send(data);
+            return res.status(200).send(data);
             // res.send("ok");
         })
             .catch(err => {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while submitting the review for Alexa!."
-                });
+                return res.status(500).send(err);
+                // .catch(err => {
+                //    return res.status(500).send({
+                //         message:
+                //             err.message || "Some error occurred while submitting the review for Alexa!."
+                //     });
+                // });
             });
-    },
-    fetchAAllreview(req, res) {
-        let filters = req.query;
-        let filterCondition = {
-            reviewed_date: filters.reviewed_date ? filters.reviewed_date : null,
-            review_source: filters.review_source ? filters.review_source : null,
-            rating: filters.rating ? filters.rating : null
-        }
+        },
+                fetchAAllreview(req, res) {
+                let filters = req.query;
+                let filterCondition = {
+                    reviewed_date: filters.reviewed_date ? filters.reviewed_date : null,
+                    review_source: filters.review_source ? filters.review_source : null,
+                    rating: filters.rating ? filters.rating : null
+                }
         cleanObject(filterCondition);
         console.log(`${filterCondition}`);
-        alexaModel.findAll({ where: filterCondition })
-            .then(data => {
-                return res.status(200).send(data);
-            })
-            .catch(err => {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while retrieving reviews for Alexa."
-                });
-            });
-    },
-    getMonthlyRatingBystore(req, res) {
-        let store_name = req.params.review_source;
-        let data;
-        // console.log(`store_name:${store_name}`);
-        alexaModel.findAll({
-            attributes: ['rating'],
-            where:
-                { review_source: store_name }
-        }).then(async result => {
-            data = await monthly_avg_method(result);
-            return res.status(200).send({ rating: data });
+                alexaModel.findAll({ where: filterCondition })
+                    .then(data => {
+                        return res.status(200).send(data);
+                    })
+                    .catch(err => {
+                        res.status(500).send({
+                            message:
+                                err.message || "Some error occurred while retrieving reviews for Alexa."
+                        });
+                    });
+            },
+                getMonthlyRatingBystore(req, res) {
+                let store_name = req.params.review_source;
+                let data;
+                // console.log(`store_name:${store_name}`);
+                alexaModel.findAll({
+                    attributes: ['rating'],
+                    where:
+                        { review_source: store_name }
+                }).then(async result => {
+                    data = await monthly_avg_method(result);
+                    return res.status(200).send({ rating: data });
 
-        })
-            .catch(err => {
-                res.status(500).send({
-                    message: "Error retrieving feedback for Alexa"
-                });
-            });
-    },
-    getTotalRatingByCategory(req, res) {
-        let rating = req.params.rating;
-        alexaModel.findAll({
+                })
+                    .catch(err => {
+                        res.status(500).send({
+                            message: "Error retrieving feedback for Alexa"
+                        });
+                    });
+            },
+                getTotalRatingByCategory(req, res) {
+                let rating = req.params.rating;
+                alexaModel.findAll({
 
-            where: { rating: rating },
-            attributes: [[sequelize.fn("COUNT", sequelize.col('rating')), 'totalRatingCount']]
-        })
-            .then(data => {
-                return res.status(200).send(data);
-            })
-            .catch(err => {
-                return res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while retrieving reviews for Alexa."
-                });
-            });
-    }
+                    where: { rating: rating },
+                    attributes: [[sequelize.fn("COUNT", sequelize.col('rating')), 'totalRatingCount']]
+                })
+                    .then(data => {
+                        return res.status(200).send(data);
+                    })
+                    .catch(err => {
+                        return res.status(500).send({
+                            message:
+                                err.message || "Some error occurred while retrieving reviews for Alexa."
+                        });
+                    });
+            }
 }
 

@@ -47,7 +47,23 @@ describe("testing getTotalRatingByCategory test", () => {
         await alexaController.getTotalRatingByCategory(req, response);
         expect(response.status).toHaveBeenCalledWith(200);
     })
+    it("testing false rating value for finding total ratings based on category", async () => {
+        let req = {
+            params: {
+                "rating": 0
+            }
+        }
+        let err = "status code 500";
+        let response = mockValues.mockResponse();
+        response.send(status = 500);
+        alexaController.__set__('alexaModel.findAll', jest.fn().mockReturnValue(mockValues.getRejectPromise([err])));
+        response.send = function (args) {
+            expect(args.message) == 'Some error occurred while retrieving reviews for Alexa.'
+        }
+        await alexaController.getTotalRatingByCategory(req, response);
+        expect(response.status) == 500;
 
+    })
 })
 describe("testing getMonthlyRatingBystore test", () => {
     let req = {
@@ -93,6 +109,23 @@ describe("testing getMonthlyRatingBystore test", () => {
         await alexaController.getMonthlyRatingBystore(req, response);
 
     })
+    it("testing false rating value for finding total ratings based on category", async () => {
+        let req = {
+            params: {
+                "rating": 0
+            }
+        }
+        let err = "status code 500";
+        let response = mockValues.mockResponse();
+
+        alexaController.__set__('alexaModel.findAll', jest.fn().mockReturnValue(mockValues.getRejectPromise([err])));
+        response.send = function (args) {
+            expect(args.message) == 'Some error occurred while retrieving reviews for Alexa.'
+        }
+        await alexaController.getMonthlyRatingBystore(req, response);
+
+
+    })
 })
 describe("testing fetch Review", () => {
     let obj =
@@ -119,16 +152,16 @@ describe("testing fetch Review", () => {
             "review_source": "iTunes",
             "rating": 4
         }
-        alexaController.__set__('alexaModel.findAll', jest.fn().mockReturnValue(mockValues.getResolvePromise([ obj ])));
+        alexaController.__set__('alexaModel.findAll', jest.fn().mockReturnValue(mockValues.getResolvePromise([obj])));
 
         let response = mockValues.mockResponse();
 
         response.send = function (args) {
 
-            expect(args.length)>0;
-            expect(args.obj.rating)==4;
-            expect(args.obj.author)=='WarcryxD';
-            expect(args.obj.title)=='Excelente';
+            expect(args.length) > 0;
+            expect(args.obj.rating) == 4;
+            expect(args.obj.author) == 'WarcryxD';
+            expect(args.obj.title) == 'Excelente';
 
         }
         await alexaController.fetchAAllreview(req, response);
@@ -142,12 +175,26 @@ describe("testing fetch Review", () => {
 
         let response = mockValues.mockResponse();
         response.send = function (args) {
-            expect(args.length)==0;
-            expect(args)==null
+            expect(args.length) == 0;
+            expect(args) == null
         }
         await alexaController.fetchAAllreview(req, response);
         expect(response.status).toHaveBeenCalledWith(200);
     })
+    it("testing false rating value for finding total ratings based on category", async () => {
+          req.query = {};
+        let err = "status code 500";
+        let response = mockValues.mockResponse();
+
+        alexaController.__set__('alexaModel.findAll', jest.fn().mockReturnValue(mockValues.getRejectPromise([err])));
+        response.send = function (args) {
+            expect(args.message) == 'Some error occurred while retrieving reviews for Alexa.'
+        }
+        await alexaController.fetchAAllreview(req, response);
+
+
+    })
+    
 })
 describe("testing accept review test", () => {
 
@@ -171,19 +218,19 @@ describe("testing accept review test", () => {
         }
         let req = {};
         req.body = obj;
-        alexaController.__set__('alexaModel.create', jest.fn().mockReturnValue(mockValues.getResolvePromise([ obj ])));
+        alexaController.__set__('alexaModel.create', jest.fn().mockReturnValue(mockValues.getResolvePromise([obj])));
 
         let response = mockValues.mockResponse();
 
         response.send = function (args) {
 
-            expect(args.length)==1;
-            expect(args.author)=='WarcryxD'
-            expect(args.title)=='Excelente'
-            expect(args.rating)==4
+            expect(args.length) == 1;
+            expect(args.author) == 'WarcryxD'
+            expect(args.title) == 'Excelente'
+            expect(args.rating) == 4
         }
         await alexaController.acceptReview(req, response);
-        expect(response.status).toHaveBeenCalledWith(201);
+        expect(response.status).toHaveBeenCalledWith(200);
     })
     it("testing false rating value for Accept Review", async () => {
         let obj =
@@ -202,13 +249,35 @@ describe("testing accept review test", () => {
 
         let response = mockValues.mockResponse();
         response.send = function (args) {
-            expect(args.length)==1;
-            expect(args.author)==null
-            expect(args.title)==null
-            expect(args.rating)==null
+            expect(args.length) == 1;
+            expect(args.author) == null
+            expect(args.title) == null
+            expect(args.rating) == null
 
         }
         await alexaController.acceptReview(req, response);
 
+    })
+    it("testing false rating value for finding total ratings based on category", async () => {
+        let obj =
+        {
+            "review": null,
+            "author": null,
+            "review_source": null,
+            "rating": null,
+            "title": null,
+            "product_name": null,
+            "reviewed_date": null
+        }
+        let req={}
+         req.body=obj
+        let err = "status code 500";
+        let response = mockValues.mockResponse();
+
+        alexaController.__set__('alexaModel.findAll', jest.fn().mockReturnValue(mockValues.getRejectPromise([err])));
+        response.send = function (args) {
+            expect(args.message) == 'Some error occurred while retrieving reviews for Alexa.'
+        }
+        await alexaController.acceptReview(req, response);
     })
 })
