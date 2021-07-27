@@ -17,7 +17,8 @@
     "pg-hstore": "^2.3.4",
     "rewire": "^5.0.0",
     "sequelize": "^6.6.5",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^6.1.4"
   },
   "devDependencies": {
     "jest": "^27.0.6"
