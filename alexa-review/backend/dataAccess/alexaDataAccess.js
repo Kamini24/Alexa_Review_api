@@ -13,6 +13,7 @@ module.exports = {
 
         })
             .catch(err => {
+                console.error(err);
                 return res.status(500).send(err);
             });
     },
@@ -31,7 +32,8 @@ module.exports = {
                 return res.status(200).send(data);
             })
             .catch(err => {
-                res.status(500).send({
+                console.error(err);
+                return res.status(500).send({
                     message:
                         err.message || "Some error occurred while retrieving reviews for Alexa."
                 });
@@ -57,8 +59,9 @@ module.exports = {
 
         })
             .catch(err => {
-                res.status(500).send({
-                    message: "Error retrieving feedback for Alexa"
+                console.error(err);
+                return res.status(500).send({
+                    message: "Error retrieving ratings for Alexa" || err.message
                 });
             });
     },
@@ -79,9 +82,10 @@ module.exports = {
                 return res.status(200).send(data);
             })
             .catch(err => {
+                console.error(error);
                 return res.status(500).send({
                     message:
-                        err.message || "Some error occurred while retrieving reviews for Alexa."
+                        err.message || "Some error occurred getting total rating for Alexa."
                 });
             });
     }

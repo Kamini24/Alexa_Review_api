@@ -3,11 +3,11 @@ jest.mock('../dataAccess/alexaDataAccess');
 const alexaController = require('../dataAccess/alexaDataAccess');
 const request = require('supertest');
 
-describe('checking access review', () => {
+describe.skip('checking access review', () => {
     let app, appUrl;
     beforeAll(() => {
         app = require('../server');
-        appUrl = 'api/alexa'
+        appUrl = 'api/alexa';
     })
     jest.setTimeout(100000000);
     test('checking /acceptReview route which gets all review would be saved', async () => {
