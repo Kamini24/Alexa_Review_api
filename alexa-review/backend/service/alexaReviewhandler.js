@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const fs= require('fs');
 
    function cleanObject(filterCondition) {
     for (let items in filterCondition) {
@@ -19,4 +20,8 @@ const _ = require("lodash");
     avg_montly_rating = ((length_fivestar * 5) + (length_fourstar * 4) + (length_threestar * 3) + (length_twostar * 2) + (length_onestar)) / total;
     return avg_montly_rating;
 };
+function writingDataTofile(obj){
+    let data = JSON.stringify(obj);
+fs.writeFile(__dirname+'/data/alexa.json', data);
+}
 module.exports={cleanObject,monthly_avg_method}

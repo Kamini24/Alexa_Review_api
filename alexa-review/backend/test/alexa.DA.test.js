@@ -47,7 +47,7 @@ describe("testing getTotalRatingByCategory test", () => {
         await alexaDA.getTotalRatingByCategory(req, response);
         expect(response.status).toHaveBeenCalledWith(200);
     })
-    it("testing false rating value for finding total ratings based on category", async () => {
+    it("testing promise reject", async () => {
         let req = {
             params: {
                 "rating": 0
@@ -109,7 +109,7 @@ describe("testing getMonthlyRatingBystore test", () => {
         await alexaDA.getMonthlyRatingBystore(req, response);
 
     })
-    it("testing false rating value for finding total ratings based on category", async () => {
+    it("testing promise reject", async () => {
         let req = {
             params: {
                 "rating": 0
@@ -181,7 +181,7 @@ describe("testing fetch Review", () => {
         await alexaDA.fetchAAllreview(req, response);
         expect(response.status).toHaveBeenCalledWith(200);
     })
-    it("testing false rating value for finding total ratings based on category", async () => {
+    it("testing promise reject", async () => {
         req.query = {};
         let err = "status code 500";
         let response = mockValues.mockResponse();
@@ -258,7 +258,7 @@ describe("testing accept review test", () => {
         await alexaDA.acceptReview(req, response);
 
     })
-    it("testing false rating value for finding total ratings based on category", async () => {
+    it("testing promise reject", async () => {
         let obj =
         {
             "review": null,
